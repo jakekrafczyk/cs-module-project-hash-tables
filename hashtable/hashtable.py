@@ -218,23 +218,23 @@ class HashTable:
         # Your code here
         #print(new_capacity)
         old_bucket_array = self.bucket_array
-        self = HashTable(new_capacity)
-        #self.capacity = new_capacity
-        #self.bucket_array = [None for i in range(new_capacity)]
-        #self.count = 0
+        old_count = self.count
+        #new_ht = HashTable(new_capacity)
+        self.capacity = new_capacity
+        self.bucket_array = [None for i in range(new_capacity)]
+        
 
         for x in old_bucket_array:
-            if x:
-                while x:
-                    if x.key:
-                        #print('k',x.key,'v',x.value)
-                        #self.delete(x.key)
-                        self.put(x.key,x.value)
-                        # need to move to the next hashnode in the bucket
-                    x = x.next
+            cur = x
+            while cur:
+                self.put(cur.key,cur.value)
+                # need to move to the next hashnode in the bucket
+                cur = cur.next
 
         #print(new_ht.capacity)
-        return self
+        self.count = old_count
+        #return new_ht
+        
         
 
 
