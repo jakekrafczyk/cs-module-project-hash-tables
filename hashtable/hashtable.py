@@ -19,7 +19,26 @@ def djb2(key):
   return hash
 '''
 
+# this node class is replicated by the hastable entry class
+class Node:
+    def __init__(self,value):
+        self.value = value
+        self.next = None
 
+# this linked list class is replicated by the hashtable class
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert(self,value):
+        pass
+
+    def delete(self,value):
+        pass
+
+
+# just as a linked list class uses a node class, the hastable class
+# uses a hashtableentry class
 class HashTable:
     """
     A hash table that with `capacity` buckets
@@ -31,6 +50,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity
         self.bucket_array = [None for i in range(capacity)]
+        self.count = 0
 
 
 
@@ -54,6 +74,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        return self.count / self.capacity  
 
 
     def fnv1(self, key):
@@ -96,9 +117,38 @@ class HashTable:
 
         Implement this.
         """
+
         # Your code here
         i = self.hash_index(key)
-        self.bucket_array[i] = value
+        # self.bucket_array[i] = value
+
+        # create a new hashnode
+        new_entry = HashTableEntry(key,value)
+        # mark the corresponding bucket as current hashnode
+        cur = self.bucket_array[i]
+
+        # if theres already an entry in this bucket
+        if cur:
+            last = None
+            while cur:
+                # if the key matches, replace the existing value
+                if cur.key == key:
+                    cur.value = value
+                    self.count -= 1
+                    return
+                last = cur
+                cur = cur.next
+
+            last.next = new_entry
+
+        else:
+            self.bucket_array[i] = new_entry
+        # add a counter
+        self.count += 1
+
+        # check load factor
+        if self.get_load_factor() > 0.7:
+            self.resize(self.capacity * 2)
 
     def delete(self, key):
         """
@@ -110,7 +160,26 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        self.bucket_array[i] = None
+        cur = self.bucket_array[i]
+        if cur:
+            last = None
+            while cur:
+                # if the key matches, replace the existing value
+                if cur.key == key:
+                    # if last exists, then set last.next to cur.next
+                    if last:
+                        last.next = cur.next
+                    # else set the bucket value to the next hashnode
+                    # which will be checked next
+                    else:
+                        self.bucket_array[i] = cur.next
+                    # add a counter
+                    self.count -= 1
+        
+                last = cur
+                cur = cur.next
+
+        
 
 
     def get(self, key):
@@ -123,7 +192,29 @@ class HashTable:
         """
         # Your code here
         i = self.hash_index(key)
-        return self.bucket_array[i]
+
+        # switch this to cur = self.bucket_array
+        # then, need to define value. value = key?
+        #return self.bucket_array[i]
+        cur = self.bucket_array[i]
+        if cur:
+            while cur:
+                if cur.key == key:
+                    return cur.value
+                    # check the next value
+                cur = cur.next
+
+        return None
+
+        '''
+        cur = self.head
+        while cur is not None:
+            if cur.value == value:
+                return cur
+            cur = cur.next
+
+        return None
+        ''' 
 
 
     def resize(self, new_capacity):
@@ -134,6 +225,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        
+        pass
 
 
 
