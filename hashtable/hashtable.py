@@ -206,15 +206,6 @@ class HashTable:
 
         return None
 
-        '''
-        cur = self.head
-        while cur is not None:
-            if cur.value == value:
-                return cur
-            cur = cur.next
-
-        return None
-        ''' 
 
 
     def resize(self, new_capacity):
@@ -225,8 +216,26 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        #print(new_capacity)
+        old_bucket_array = self.bucket_array
+        self = HashTable(new_capacity)
+        #self.capacity = new_capacity
+        #self.bucket_array = [None for i in range(new_capacity)]
+        #self.count = 0
+
+        for x in old_bucket_array:
+            if x:
+                while x:
+                    if x.key:
+                        #print('k',x.key,'v',x.value)
+                        #self.delete(x.key)
+                        self.put(x.key,x.value)
+                        # need to move to the next hashnode in the bucket
+                    x = x.next
+
+        #print(new_ht.capacity)
+        return self
         
-        pass
 
 
 
@@ -245,6 +254,8 @@ if __name__ == "__main__":
     ht.put("line_10", "Long time the manxome foe he sought--")
     ht.put("line_11", "So rested he by the Tumtum tree")
     ht.put("line_12", "And stood awhile in thought.")
+
+    print('load',ht.get_load_factor(),'count',ht.count)
 
     print("")
 
