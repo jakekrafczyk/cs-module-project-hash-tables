@@ -1,5 +1,23 @@
+
+
 def word_count(s):
-    # Your code here
+    
+    split = s.split()
+
+    word_dict = {}
+
+    for s in split:
+        s = s.lower()
+        s = ''.join(filter(str.isalpha, s))
+        # put words in a dictionary
+        if s in word_dict:
+            word_dict[s] += 1
+        else:
+            word_dict[s] = 1
+
+    
+    return word_dict
+
 
 
 
