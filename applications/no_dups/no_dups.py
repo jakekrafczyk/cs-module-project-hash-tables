@@ -1,5 +1,14 @@
 def no_dups(s):
-    # Your code here
+    # get rid of duplicates with 0(n) runtime
+    lookup = []
+    words = s.split(" ")
+    for index, word in enumerate(words):
+        if word not in lookup:
+            lookup.append(word)
+        else:
+            words.pop(index)
+    print(words)
+    return words
 
 
 
